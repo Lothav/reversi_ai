@@ -16,6 +16,11 @@ private:
 public:
 
     Piece() = default;
+
+    void setPiece(PieceType type)
+    {
+        this->type = type;
+    }
 };
 
 #endif //REVERSEAI_PIECE_HPP

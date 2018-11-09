@@ -9,7 +9,9 @@ class Table
 
 private:
 
-    std::array<std::array<Piece*, 8>, 8> pieces = {};
+    const static int TABLE_SIZE = 8;
+
+    std::array<std::array<Piece*, TABLE_SIZE>, TABLE_SIZE> pieces = {};
 
 public:
 
@@ -20,6 +22,15 @@ public:
                 cells = new Piece();
             }
         }
+    }
+
+    void setPiece(int i, int j, PieceType type)
+    {
+        if(i >= TABLE_SIZE || j >= TABLE_SIZE){
+            return;
+        }
+
+        pieces[i][j]->setPiece(type);
     }
 
 
