@@ -22,10 +22,10 @@ public:
     {
         table = new Table();
 
-        table->setPiece(3, 3, PieceType::BLACK);
-        table->setPiece(4, 4, PieceType::BLACK);
-        table->setPiece(3, 4, PieceType::WHITE);
-        table->setPiece(4, 3, PieceType::WHITE);
+        table->setPiece(3, 3, PieceType::WHITE);
+        table->setPiece(4, 4, PieceType::WHITE);
+        table->setPiece(3, 4, PieceType::BLACK);
+        table->setPiece(4, 3, PieceType::BLACK);
     }
 
     std::vector<std::array<int, 2>> getAllowedPlays()
@@ -34,10 +34,10 @@ public:
         auto pieces = table->getPieces();
 
         PieceType turn_piece_type = PieceType::BLACK;
-        PieceType opp_piece_type = PieceType::WHITE;
+        PieceType opp_piece_type  = PieceType::WHITE;
         if(turn == Turn::PLAYER) {
             turn_piece_type = PieceType::WHITE;
-            opp_piece_type = PieceType::BLACK;
+            opp_piece_type  = PieceType::BLACK;
         }
 
         for (int l = 0; l < pieces.size(); l++){
@@ -47,38 +47,24 @@ public:
                     std::array<int, 2> pos = {l, c};
                     std::array<int, 2> move = {l, c};
 
-                    // Right
-                    move = checkMoveDirection(pos, {0, +1}, opp_piece_type);
-                    if(move[1] != pos[1]+1) plays.push_back(move);
+                    std::vector<std::array<int, 2>> direction_moves = {
+                            { 0, +1}, // Right
+                            { 0, -1}, // Left
+                            {+1,  0}, // Up
+                            {-1,  0}, // Down
+                            {+1, +1}, // Up Right
+                            {-1, +1}, // Down Right
+                            {-1, -1}, // Down Left
+                            {+1, -1}  // Up Left
+                    };
 
-                    // Left
-                    move = checkMoveDirection(pos, {0, -1}, opp_piece_type);
-                    if(move[1] != pos[1]-1) plays.push_back(move);
+                    for (auto &direction_move: direction_moves) {
+                        move = checkMoveDirection(pos, direction_move, opp_piece_type);
+                        bool check_m0 = move[0] != pos[0]+direction_move[0];
+                        bool check_m1 = move[1] != pos[1]+direction_move[1];
 
-                    // Up
-                    move = checkMoveDirection(pos, {+1, 0}, opp_piece_type);
-                    if(move[0] != pos[0]+1) plays.push_back(move);
-
-                    // Down
-                    move = checkMoveDirection(pos, {-1, 0}, opp_piece_type);
-                    if(move[0] != pos[0]-1) plays.push_back(move);
-
-                    // Upper Right
-                    move = checkMoveDirection(pos, {+1, +1}, opp_piece_type);
-                    if(move[0] != pos[0]+1) plays.push_back(move);
-
-                    // Down Right
-                    move = checkMoveDirection(pos, {-1, +1}, opp_piece_type);
-                    if(move[0] != pos[0]-1) plays.push_back(move);
-
-                    // Down Left
-                    move = checkMoveDirection(pos, {-1, -1}, opp_piece_type);
-                    if(move[0] != pos[0]-1) plays.push_back(move);
-
-                    // Upper Left
-                    move = checkMoveDirection(pos, {+1, -1}, opp_piece_type);
-                    if(move[0] != pos[0]+1) plays.push_back(move);
-
+                        if(check_m0 || check_m1) plays.push_back(move);
+                    }
                 }
             }
         }

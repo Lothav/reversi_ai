@@ -7,11 +7,9 @@
 class Table
 {
 
-public:
-    const static int TABLE_SIZE = 8;
-
 private:
 
+    const static int TABLE_SIZE = 8;
     std::array<std::array<Piece*, TABLE_SIZE>, TABLE_SIZE> pieces = {};
 
 public:
