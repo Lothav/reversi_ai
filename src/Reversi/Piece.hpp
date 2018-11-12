@@ -21,6 +21,11 @@ public:
     {
         this->type = type;
     }
+
+    PieceType getType()
+    {
+        return type;
+    }
 };
 
 #endif //REVERSEAI_PIECE_HPP

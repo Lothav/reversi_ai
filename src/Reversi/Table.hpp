@@ -7,9 +7,10 @@
 class Table
 {
 
-private:
-
+public:
     const static int TABLE_SIZE = 8;
+
+private:
 
     std::array<std::array<Piece*, TABLE_SIZE>, TABLE_SIZE> pieces = {};
 
@@ -18,8 +19,8 @@ public:
     Table()
     {
         for (auto &lines: pieces){
-            for (auto &cells: lines) {
-                cells = new Piece();
+            for (auto &cell: lines) {
+                cell = new Piece();
             }
         }
     }
@@ -33,6 +34,10 @@ public:
         pieces[i][j]->setPiece(type);
     }
 
+    std::array<std::array<Piece*, TABLE_SIZE>, TABLE_SIZE> getPieces()
+    {
+        return pieces;
+    };
 
 };
 
