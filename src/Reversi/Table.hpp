@@ -23,13 +23,13 @@ public:
         }
     }
 
-    void setPiece(int i, int j, PieceType type)
+    void setPiece(std::array<int, 2> pos, PieceType type)
     {
-        if(i >= TABLE_SIZE || j >= TABLE_SIZE){
+        if(pos[0] >= TABLE_SIZE || pos[1] >= TABLE_SIZE){
             return;
         }
 
-        pieces[i][j]->setPiece(type);
+        pieces[pos[0]][pos[1]]->setPiece(type);
     }
 
     std::array<std::array<Piece*, TABLE_SIZE>, TABLE_SIZE> getPieces()
