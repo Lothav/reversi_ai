@@ -39,6 +39,15 @@ public:
         table->setPiece({4, 3}, PieceType::BLACK);
     }
 
+    PieceType getTurnPiece()
+    {
+        return turn == PLAYER ? WHITE : BLACK;
+    }
+
+    PieceType getOppositePiece()
+    {
+        return turn == PLAYER ? BLACK : WHITE;
+    }
 
     std::array<int, 2> checkMoveDirection(std::array<int, 2> pos, std::array<int, 2> move)
     {
@@ -53,29 +62,34 @@ public:
         return {a - move[0], b - move[1]};
     }
 
+    void changeTurn()
+    {
+        turn = turn == PLAYER ? COMPUTER : PLAYER;
+    }
+
     void makeAMove(std::array<int, 2> allowed_play)
     {
+        auto pieces = table->getPieces();
+
         table->setPiece(allowed_play, getTurnPiece());
 
         for (auto &direction_move: direction_moves) {
             auto move = checkMoveDirection(allowed_play, direction_move);
-            if (move[0] != allowed_play[0] && move[1] != allowed_play[1]){
-                if (table->getPieces()[move[0]][move[1]]->getType() == getTurnPiece()){
+            int x = move[0];
+            int y = move[1];
 
+            if (x != allowed_play[0] && y != allowed_play[1]){
+                if (pieces[x][y]->getType() == getTurnPiece()){
+                    do {
+                        x -= direction_move[0];
+                        y -= direction_move[1];
+                        pieces[x][y]->setPiece(getTurnPiece());
+                    } while(pieces[x][y]->getType() == getOppositePiece());
                 }
             }
         }
 
-    }
-
-    PieceType getTurnPiece()
-    {
-        return turn == PLAYER ? WHITE : BLACK;
-    }
-
-    PieceType getOppositePiece()
-    {
-        return turn == PLAYER ? BLACK : WHITE;
+        changeTurn();
     }
 
     std::vector<std::array<int, 2>> getAllowedPlays()
@@ -104,6 +118,11 @@ public:
         }
 
         return plays;
+    }
+
+    std::string toString()
+    {
+        return "Current Table: \n" + table->toString();
     }
 
 };

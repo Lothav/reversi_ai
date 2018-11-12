@@ -37,6 +37,26 @@ public:
         return pieces;
     };
 
+    std::string toString()
+    {
+        std::string s;
+
+        for (auto &lines: pieces){
+            for (auto &cell: lines) {
+                if (cell->getType() == BLACK){
+                    s +=  "B ";
+                } else if(cell->getType() == WHITE){
+                    s +=  "W ";
+                } else {
+                    s +=  "E ";
+                }
+            }
+            s += "\n";
+        }
+
+        return s;
+    }
+
 };
 
 #endif //REVERSEAI_TABLE_HPP
