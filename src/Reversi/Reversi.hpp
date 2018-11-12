@@ -59,7 +59,7 @@ public:
         while(a < pieces.size() && b < pieces[a].size() && a >= 0 && b >= 0 &&
               pieces[a += move[0]][b += move[1]]->getType() == getOppositePiece());
 
-        return {a - move[0], b - move[1]};
+        return {a, b};
     }
 
     void changeTurn()
@@ -78,7 +78,9 @@ public:
             int x = move[0];
             int y = move[1];
 
-            if (x != allowed_play[0] && y != allowed_play[1]){
+            bool check_m0 = move[0] != allowed_play[0]+direction_move[0];
+            bool check_m1 = move[1] != allowed_play[1]+direction_move[1];
+            if (check_m0 || check_m1){
                 if (pieces[x][y]->getType() == getTurnPiece()){
                     do {
                         x -= direction_move[0];
@@ -92,7 +94,7 @@ public:
         changeTurn();
     }
 
-    std::vector<std::array<int, 2>> getAllowedPlays()
+    std::vector<std::array<int, 2>> getAllowedMoves()
     {
         auto pieces = table->getPieces();
 
@@ -104,14 +106,13 @@ public:
         for (int l = 0; l < pieces.size(); l++){
             for (int c = 0; c < pieces[l].size(); c++) {
                 if(pieces[l][c]->getType() == turn_piece_type){
-
                     std::array<int, 2> pos  = {l, c};
                     std::array<int, 2> move = {l, c};
-
                     for (auto &direction_move: direction_moves) {
                         move = checkMoveDirection(pos, direction_move);
-                        if(move[0] != pos[0] && move[1] != pos[1])
-                            plays.push_back(move);
+                        bool check_m0 = move[0] != pos[0]+direction_move[0];
+                        bool check_m1 = move[1] != pos[1]+direction_move[1];
+                        if(check_m0 || check_m1) plays.push_back(move);
                     }
                 }
             }
