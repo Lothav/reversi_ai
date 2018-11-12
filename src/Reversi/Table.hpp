@@ -48,7 +48,7 @@ public:
                 } else if(cell->getType() == WHITE){
                     s +=  "W ";
                 } else {
-                    s +=  "E ";
+                    s +=  "  ";
                 }
             }
             s += "\n";
